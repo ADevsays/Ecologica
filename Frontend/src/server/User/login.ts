@@ -1,6 +1,8 @@
 const URL = import.meta.env.PUBLIC_URL_PATH; 
-
+console.log("The URL is:", URL);
 export default async function userLogin(email: string, password: string) {
+    console.log("The URL is:", URL);
+    
     const options = {
         method: 'POST',
         headers: {
