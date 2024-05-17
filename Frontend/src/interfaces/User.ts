@@ -4,7 +4,7 @@ export interface User {
     age: number;
     isAdmin: number;
     password: string;
-    id: string
+    id?: string
 }
 
 export interface FormRegisterDataUser {
@@ -15,6 +15,5 @@ export interface FormRegisterDataUser {
     password: string;
     confirmPassword?: string;
     isAdmin:number;
-    id: string;
     [key:string]: string | number | undefined
   }

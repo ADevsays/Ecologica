@@ -10,8 +10,7 @@ const formData: FormRegisterDataUser = {
 	age: 0,
 	isAdmin: 0,
 	password: "",
-	confirmPassword: "",
-	id: ""
+	confirmPassword: ""
 };
 
 const realTokenSave = import.meta.env.PUBLIC_CREATE_ADMIN_TOKEN;

@@ -14,8 +14,6 @@ app.use(cors({
     origin: process.env.HOST || 'http://localhost:4321'
 }));
 
-console.log(process.env.HOST)
-
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
@@ -24,8 +22,6 @@ app.get("/status", (_, res)=> res.status(200).json({msg:"All right"}))
 app.use("/user", userRouter);
 app.use("/forum", forumRouter);
 app.use("/stats", collectionMaterialRouter);
-
-
 
 app.listen(port, () => console.log(`Servidor conectado en el puerto ${port}`))
 
