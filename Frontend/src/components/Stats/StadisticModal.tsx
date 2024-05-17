@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type Dispatch, type SetStateAction, type ChangeEvent } from "react"
 import PrincipalButton from "../UI/PrincipalButton"
-import type Chart from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 import createPie from "@/helpers/createPieStats";
 import MATERIALS from "@/const/MATERIALS";
 import { getMonthName } from "@/helpers/getMonthName";
