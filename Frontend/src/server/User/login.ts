@@ -8,7 +8,7 @@ export default async function userLogin(email: string, password: string) {
         },
         body: JSON.stringify({ email, password })
     };
-
+    console.log(URL);
     try {
         const result = await fetch(`${URL}/user/login`, options);
         const user = await result.json();
