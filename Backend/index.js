@@ -17,6 +17,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
+app.get("/status", (_, res)=> res.status(200).json({msg:"All right"}))
 
 app.use("/user", userRouter);
 app.use("/forum", forumRouter);
