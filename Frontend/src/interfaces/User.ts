@@ -15,5 +15,6 @@ export interface FormRegisterDataUser {
     password: string;
     confirmPassword?: string;
     isAdmin:number;
+    id: string;
     [key:string]: string | number | undefined
   }

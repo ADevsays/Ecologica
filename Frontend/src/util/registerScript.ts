@@ -11,6 +11,7 @@ const formData: FormRegisterDataUser = {
 	isAdmin: 0,
 	password: "",
 	confirmPassword: "",
+	id: ""
 };
 
 const realTokenSave = import.meta.env.PUBLIC_CREATE_ADMIN_TOKEN;
@@ -61,6 +62,5 @@ export default function registerScript(adminToken?: string | null) {
 	const allInputs = document.querySelectorAll("input");
 	allInputs.forEach(input => input.addEventListener("change", handleChange))
 	form?.addEventListener("submit", handleSubmit);
-
 }
 
