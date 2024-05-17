@@ -10,7 +10,7 @@ export default async function userLogin(email: string, password: string) {
         body: JSON.stringify({ email, password })
     };
     try {
-        const result = await fetch(`https://ecologica-stu8.onrender.com/user/login`, options);
+        const result = await fetch(`${URL}/user/login`, options);
         const user = await result.json();
         if(user.error) console.error(user.error);
         console.log(`Usuario ${user.name} ha iniciado sesión correctamente`);

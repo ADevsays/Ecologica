@@ -14,6 +14,8 @@ app.use(cors({
     origin: process.env.HOST || 'http://localhost:4321'
 }));
 
+console.log(process.env.HOST)
+
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
