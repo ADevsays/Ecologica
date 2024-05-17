@@ -1,4 +1,4 @@
-import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, M as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, a as UnsupportedImageConversion, b as MissingSharp } from '../astro_B_bJZi8i.mjs';
+import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, M as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, a as UnsupportedImageConversion } from '../astro_WASpLENQ.mjs';
 
 function appendForwardSlash(path) {
   return path.endsWith("/") ? path : path + "/";
@@ -62,6 +62,9 @@ function isESMImportedImage(src) {
 function isRemoteImage(src) {
   return typeof src === "string";
 }
+async function resolveSrc(src) {
+  return typeof src === "object" && "then" in src ? (await src).default ?? await src : src;
+}
 
 function matchPattern(url, remotePattern) {
   return matchProtocol(url, remotePattern.protocol) && matchHostname(url, remotePattern.hostname, true) && matchPort(url, remotePattern.port) && matchPathname(url, remotePattern.pathname, true);
@@ -106,8 +109,7 @@ function isRemoteAllowed(src, {
   domains = [],
   remotePatterns = []
 }) {
-  if (!isRemotePath(src))
-    return false;
+  if (!isRemotePath(src)) return false;
   const url = new URL(src);
   return domains.some((domain) => matchHostname(url, domain)) || remotePatterns.some((remotePattern) => matchPattern(url, remotePattern));
 }
@@ -117,13 +119,6 @@ function isLocalService(service) {
     return false;
   }
   return "transform" in service;
-}
-function parseQuality(quality) {
-  let result = parseInt(quality);
-  if (Number.isNaN(result)) {
-    return quality;
-  }
-  return result;
 }
 const baseService = {
   propertiesToHash: DEFAULT_HASH_PROPS,
@@ -316,69 +311,4 @@ function getTargetDimensions(options) {
   };
 }
 
-let sharp;
-const qualityTable = {
-  low: 25,
-  mid: 50,
-  high: 80,
-  max: 100
-};
-async function loadSharp() {
-  let sharpImport;
-  try {
-    sharpImport = (await import('sharp')).default;
-  } catch (e) {
-    throw new AstroError(MissingSharp);
-  }
-  return sharpImport;
-}
-const sharpService = {
-  validateOptions: baseService.validateOptions,
-  getURL: baseService.getURL,
-  parseURL: baseService.parseURL,
-  getHTMLAttributes: baseService.getHTMLAttributes,
-  getSrcSet: baseService.getSrcSet,
-  async transform(inputBuffer, transformOptions, config) {
-    if (!sharp)
-      sharp = await loadSharp();
-    const transform = transformOptions;
-    if (transform.format === "svg")
-      return { data: inputBuffer, format: "svg" };
-    const result = sharp(inputBuffer, {
-      failOnError: false,
-      pages: -1,
-      limitInputPixels: config.service.config.limitInputPixels
-    });
-    result.rotate();
-    if (transform.height && !transform.width) {
-      result.resize({ height: Math.round(transform.height) });
-    } else if (transform.width) {
-      result.resize({ width: Math.round(transform.width) });
-    }
-    if (transform.format) {
-      let quality = void 0;
-      if (transform.quality) {
-        const parsedQuality = parseQuality(transform.quality);
-        if (typeof parsedQuality === "number") {
-          quality = parsedQuality;
-        } else {
-          quality = transform.quality in qualityTable ? qualityTable[transform.quality] : void 0;
-        }
-      }
-      result.toFormat(transform.format, { quality });
-    }
-    const { data, info } = await result.toBuffer({ resolveWithObject: true });
-    return {
-      data,
-      format: info.format
-    };
-  }
-};
-var sharp_default = sharpService;
-
-const sharp$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
-  __proto__: null,
-  default: sharp_default
-}, Symbol.toStringTag, { value: 'Module' }));
-
-export { DEFAULT_HASH_PROPS as D, isESMImportedImage as a, isLocalService as b, isRemotePath as c, isRemoteAllowed as d, appendForwardSlash as e, fileExtension as f, collapseDuplicateSlashes as g, sharp$1 as h, isRemoteImage as i, joinPaths as j, prependForwardSlash as p, removeTrailingForwardSlash as r, slash as s, trimSlashes as t };
+export { DEFAULT_HASH_PROPS as D, isESMImportedImage as a, isLocalService as b, isRemotePath as c, isRemoteAllowed as d, appendForwardSlash as e, fileExtension as f, removeTrailingForwardSlash as g, collapseDuplicateSlashes as h, isRemoteImage as i, joinPaths as j, baseService as k, prependForwardSlash as p, resolveSrc as r, slash as s, trimSlashes as t };

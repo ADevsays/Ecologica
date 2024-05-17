@@ -9,5 +9,10 @@ export default defineConfig({
   output: "hybrid",
   adapter: vercel({
     imageService: true,
-  })
+  }),
+  vite: {
+    ssr:{
+      noExternal: 'cookie'
+    }
+  }
 });

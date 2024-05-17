@@ -4,10 +4,11 @@ import Layout from "../../layouts/Layout.astro";
 import ForumChat from "../../sections/forum/ForumChat.tsx";
 import ListOfForums from "../../sections/forum/ListOfForums.tsx";
 import type { Forum } from "@/interfaces/Forum";
+import type { GetStaticPaths } from "astro";
 
 export const prerender = false;
 const { forumName } = Astro.params;
-let forums = [];
+let forums: any[] = [];
 let currentForum = null;
 try {
     forums = await getAllForums();
@@ -15,6 +16,9 @@ try {
 } catch (error) {
     console.error(error);
 }
+export const getStaticPaths = (async () => {
+    return forums.map((forum)=> ({params: {forumName: forum.title}}))
+}) satisfies GetStaticPaths;
 ---
 
 <Layout
@@ -51,7 +55,6 @@ try {
                 <ListOfForums forums={forums} client:load/>
                 <ForumChat currentForum={currentForum} client:load/>
             }
-            
         </div>
     </main>
 </Layout>
